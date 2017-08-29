@@ -80,6 +80,10 @@ ERROR: No matches found for Val{:d}()
 julia> v[@value a]
 ERROR: Multiple matches found for Val{:a}()
 [...]
+
+julia> @VT x * y
+ERROR: Unable to decompose assignment x * y
+[...]
 ```
 """
 macro VT(args...)
