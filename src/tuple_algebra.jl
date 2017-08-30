@@ -49,10 +49,6 @@ and(v1, v2) = Val{false}()
 
 all_tuple(args) = reduce_tuple(and, (@value true), args)
 
-drop_tuple(t::Tuple{A}, v) where A = first(t)
-drop_tuple(t::Tuple{}, v) = error("No matches found for $v")
-drop_tuple(t, v) = error("Multiple matches found for $v")
-
 not(::Val{false}) = Val{true}()
 not(::Val{true}) = Val{false}()
 

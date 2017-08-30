@@ -59,8 +59,8 @@ export @VT
 Make a `ValuedTuple`. A valued tuple can be indexed only with `Val`s (create
 with [`@value`](@ref)). Valued tuples can be manipulated in a type-stable way
 because the names are directly encoded into the type. You can use repeated
-values. getindex will error when trying to index at a repeated value; use
-[`match_index`](@ref) instead.
+values. `getindex` will take the last match when trying to index at a repeated
+value; for all matches, use [`match_index`](@ref) instead.
 
 ```jldoctest
 julia> using ValuedTuples
@@ -74,12 +74,11 @@ julia> v[@value b]
 2
 
 julia> v[@value d]
-ERROR: No matches found for Val{:d}()
+ERROR: BoundsError: attempt to access ()
 [...]
 
 julia> v[@value a]
-ERROR: Multiple matches found for Val{:a}()
-[...]
+3
 
 julia> @VT x * y
 ERROR: Unable to decompose assignment x * y
@@ -120,7 +119,7 @@ match_index(v::ValuedTuple, value) =
         end)
 
 Base.getindex(v::ValuedTuple, value) =
-    drop_tuple(match_index(v, value), value)
+    last(match_index(v, value))
 
 """
     Base.merge(v1::ValuedTuple, v2::ValuedTuple)
