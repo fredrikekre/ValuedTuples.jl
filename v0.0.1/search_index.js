@@ -37,7 +37,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Home",
     "title": "ValuedTuples.@VT",
     "category": "Macro",
-    "text": "@VT args...\n\nMake a ValuedTuple. A valued tuple can be indexed only with Vals (create with @value). Valued tuples can be manipulated in a type-stable way because the names are directly encoded into the type. You can use repeated values. getindex will error when trying to index at a repeated value; use match_index instead.\n\njulia> using ValuedTuples\n\njulia> b = 2;\n\njulia> v = @VT a = 1 b a = 3\n(@VT a = 1 b = 2 a = 3)\n\njulia> v[@value b]\n2\n\njulia> v[@value d]\nERROR: No matches found for Val{:d}()\n[...]\n\njulia> v[@value a]\nERROR: Multiple matches found for Val{:a}()\n[...]\n\njulia> @VT x * y\nERROR: Unable to decompose assignment x * y\n[...]\n\n\n\n"
+    "text": "@VT args...\n\nMake a ValuedTuple. A valued tuple can be indexed only with Vals (create with @value). Valued tuples can be manipulated in a type-stable way because the names are directly encoded into the type. You can use repeated values. getindex will take the last match when trying to index at a repeated value; for all matches, use match_index instead.\n\njulia> using ValuedTuples\n\njulia> b = 2;\n\njulia> v = @VT a = 1 b a = 3\n(@VT a = 1 b = 2 a = 3)\n\njulia> v[@value b]\n2\n\njulia> v[@value d]\nERROR: BoundsError: attempt to access ()\n[...]\n\njulia> v[@value a]\n3\n\njulia> @VT x * y\nERROR: Unable to decompose assignment x * y\n[...]\n\n\n\n"
 },
 
 {
