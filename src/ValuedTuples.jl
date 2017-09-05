@@ -60,7 +60,8 @@ Make a `ValuedTuple`. A valued tuple can be indexed only with `Val`s (create
 with [`@value`](@ref)). Valued tuples can be manipulated in a type-stable way
 because the names are directly encoded into the type. You can use repeated
 values. `getindex` will take the last match when trying to index at a repeated
-value; for all matches, use [`match_index`](@ref) instead.
+value; for all matches, use [`match_index`](@ref) instead. A vector of
+NamedTuples will conveniently print as a markdown table.
 
 ```jldoctest
 julia> using ValuedTuples
@@ -83,6 +84,12 @@ julia> v[@value a]
 julia> @VT x * y
 ERROR: Unable to decompose assignment x * y
 [...]
+
+julia> [(@VT a = 1 b = 2), (@VT a = 3 b = 4)]
+| a   | b   |
+|:--- |:--- |
+| 1   | 2   |
+| 3   | 4   |
 ```
 """
 macro VT(args...)
@@ -170,6 +177,22 @@ julia> value_names(typeof(v))
 """
 value_names(t::Type{T}) where T <: ValuedTuple = map(inner_types(fieldtype(t, :names))) do v
     inner_value(inner_value(v))
+end
+
+Base.showarray(io::IO, t::Vector{T}, repr::Bool) where T <: ValuedTuple = begin
+    if !repr && get(io, :limit, false) && length(t) > 10
+        t = t[1:10]
+        println(io, "First 10 rows")
+    end
+    fnames = value_names(eltype(t))
+    show(io,
+        Markdown.MD([Markdown.Table(
+            unshift!(
+                map(t) do named_tuple
+                    [string.(named_tuple.tuple)...]
+                end,
+                [value_names(eltype(t))...]),
+            repeat([:l], outer = length(fnames)))]))
 end
 
 end
