@@ -61,7 +61,7 @@ with [`@value`](@ref)). Valued tuples can be manipulated in a type-stable way
 because the names are directly encoded into the type. You can use repeated
 values. `getindex` will take the last match when trying to index at a repeated
 value; for all matches, use [`match_index`](@ref) instead. A vector of
-NamedTuples will conveniently print as a markdown table.
+NamedTuples with consistent names will conveniently print as a markdown table.
 
 ```jldoctest
 julia> using ValuedTuples
@@ -85,7 +85,12 @@ julia> @VT x * y
 ERROR: Unable to decompose assignment x * y
 [...]
 
-julia> [(@VT a = 1 b = 2), (@VT a = 3 b = 4)]
+julia> [(@VT a = 1 b = 2), (@VT b = 2 c = 3)]
+2-element Array{ValuedTuples.ValuedTuple{Tuple{Int64,Int64},N} where N<:Tuple,1}:
+ (@VT a = 1 b = 2)
+ (@VT b = 2 c = 3)
+
+julia> t = [(@VT a = 1 b = 2), (@VT a = 3 b = 4)]
 | a   | b   |
 |:--- |:--- |
 | 1   | 2   |
@@ -179,7 +184,7 @@ value_names(t::Type{T}) where T <: ValuedTuple = map(inner_types(fieldtype(t, :n
     inner_value(inner_value(v))
 end
 
-Base.showarray(io::IO, t::Vector{T}, repr::Bool) where T <: ValuedTuple = begin
+Base.showarray(io::IO, t::Vector{T}, repr::Bool) where T <: ValuedTuple{E, V} where V <: Tuple where E = begin
     if !repr && get(io, :limit, false) && length(t) > 10
         t = t[1:10]
         println(io, "First 10 rows")
