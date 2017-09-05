@@ -45,7 +45,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Home",
     "title": "ValuedTuples.@VT",
     "category": "Macro",
-    "text": "@VT args...\n\nMake a ValuedTuple. A valued tuple can be indexed only with Vals (create with @value). Valued tuples can be manipulated in a type-stable way because the names are directly encoded into the type. You can use repeated values. getindex will take the last match when trying to index at a repeated value; for all matches, use match_index instead.\n\njulia> using ValuedTuples\n\njulia> b = 2;\n\njulia> v = @VT a = 1 b a = 3\n(@VT a = 1 b = 2 a = 3)\n\njulia> v[@value b]\n2\n\njulia> v[@value d]\nERROR: BoundsError: attempt to access ()\n[...]\n\njulia> v[@value a]\n3\n\njulia> @VT x * y\nERROR: Unable to decompose assignment x * y\n[...]\n\n\n\n"
+    "text": "@VT args...\n\nMake a ValuedTuple. A valued tuple can be indexed only with Vals (create with @value). Valued tuples can be manipulated in a type-stable way because the names are directly encoded into the type. You can use repeated values. getindex will take the last match when trying to index at a repeated value; for all matches, use match_index instead. A vector of NamedTuples will conveniently print as a markdown table.\n\njulia> using ValuedTuples\n\njulia> b = 2;\n\njulia> v = @VT a = 1 b a = 3\n(@VT a = 1 b = 2 a = 3)\n\njulia> v[@value b]\n2\n\njulia> v[@value d]\nERROR: BoundsError: attempt to access ()\n[...]\n\njulia> v[@value a]\n3\n\njulia> @VT x * y\nERROR: Unable to decompose assignment x * y\n[...]\n\njulia> [(@VT a = 1 b = 2), (@VT a = 3 b = 4)]\n| a   | b   |\n|:--- |:--- |\n| 1   | 2   |\n| 3   | 4   |\n\n\n\n"
 },
 
 {
