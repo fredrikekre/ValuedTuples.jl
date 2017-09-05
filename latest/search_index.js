@@ -33,6 +33,14 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
+    "location": "index.html#ValuedTuples.value_names-Union{Tuple{Type{T}}, Tuple{T}} where T<:ValuedTuples.ValuedTuple",
+    "page": "Home",
+    "title": "ValuedTuples.value_names",
+    "category": "Method",
+    "text": "value_names(t::Type{T}) where T <: ValuedTuple\n\nExtract the names of a valued tuple exclusively based on its type.\n\njulia> using ValuedTuples\n\njulia> v = @VT a = 1 b = 2;\n\njulia> value_names(typeof(v))\n(:a, :b)\n\n\n\n"
+},
+
+{
     "location": "index.html#ValuedTuples.@VT-Tuple",
     "page": "Home",
     "title": "ValuedTuples.@VT",
