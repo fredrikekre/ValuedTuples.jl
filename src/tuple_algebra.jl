@@ -28,6 +28,11 @@ macro values(es...)
     end
 end
 
+macro as_value(e)
+    esc(:($Val{$e}()))
+end
+
+inner_value(::Type{Val{T}}) where T = T
 inner_value(::Val{T}) where T = T
 
 is_value(v::Val{T}) where T = Val{true}()
@@ -60,4 +65,12 @@ get_index(into::Tuple{}, index::Tuple{}) = ()
     same_length(into, index)
     next = get_index(tail(into), tail(index))
     if_else(first(index), (first(into), next...), next)
+end
+
+value_wrap(f) = (x, args...) -> @as_value f(inner_value(x), args...)
+
+inner_types(any) = inner_types(@as_value any)
+function inner_types(val_type::Val)
+    Base.@pure inner_function(i) = value_wrap(fieldtype)(val_type, i)
+    ntuple(inner_function, value_wrap(nfields)(val_type))
 end

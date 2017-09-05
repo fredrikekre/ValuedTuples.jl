@@ -153,4 +153,23 @@ delete(v::ValuedTuple, value) = begin
     ValuedTuple(get_index(v.tuple, keeps), get_index(names, keeps))
 end
 
+export value_names
+"""
+    value_names(t::Type{T}) where T <: ValuedTuple
+
+Extract the names of a valued tuple exclusively based on its type.
+
+```jldoctest
+julia> using ValuedTuples
+
+julia> v = @VT a = 1 b = 2;
+
+julia> value_names(typeof(v))
+(:a, :b)
+```
+"""
+value_names(t::Type{T}) where T <: ValuedTuple = map(inner_types(fieldtype(t, :names))) do v
+    inner_value(inner_value(v))
+end
+
 end
