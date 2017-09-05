@@ -61,7 +61,7 @@ with [`@value`](@ref)). Valued tuples can be manipulated in a type-stable way
 because the names are directly encoded into the type. You can use repeated
 values. `getindex` will take the last match when trying to index at a repeated
 value; for all matches, use [`match_index`](@ref) instead. A vector of
-NamedTuples with consistent names will conveniently print as a markdown table.
+tuples with consistent names will conveniently print as a markdown table.
 
 ```jldoctest
 julia> using ValuedTuples
